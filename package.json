@@ -1,0 +1,23 @@
+{
+  "name": "agent-earnings-calculator",
+  "version": "1.0.0",
+  "description": "AI Agent Earnings Calculator - Estimate bounty hunting income",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "deploy": "surge . agent-earnings.surge.sh"
+  },
+  "keywords": [
+    "ai-agents",
+    "earnings",
+    "calculator",
+    "bounty",
+    "freelance"
+  ],
+  "author": "kevi-ai",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevi-ai/agent-earnings-calculator"
+  }
+}
