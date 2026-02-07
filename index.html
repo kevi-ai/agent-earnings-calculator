@@ -12,367 +12,448 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --primary-light: #818cf8;
+      --primary: #8b5cf6;
+      --primary-glow: rgba(139, 92, 246, 0.4);
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.3);
       --success: #10b981;
       --warning: #f59e0b;
-      --bg: #0f172a;
-      --bg-card: #1e293b;
-      --bg-input: #334155;
-      --text: #f1f5f9;
-      --text-muted: #94a3b8;
-      --border: #334155;
-      --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      --bg-dark: #030712;
+      --bg-card: rgba(15, 23, 42, 0.8);
+      --bg-input: rgba(30, 41, 59, 0.6);
+      --text: #f8fafc;
+      --text-dim: #94a3b8;
+      --border: rgba(148, 163, 184, 0.1);
+      --glass: rgba(255, 255, 255, 0.05);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: var(--bg-dark);
       color: var(--text);
       min-height: 100vh;
       line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    .bg-pattern {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, var(--primary-glow), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, var(--accent-glow), transparent);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2rem 1rem;
+      padding: 3rem 1.5rem;
     }
 
+    /* Header */
     header {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 4rem;
     }
 
     .logo {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 30px var(--primary-glow));
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
       font-weight: 700;
-      background: var(--gradient);
+      background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
     }
 
     .subtitle {
-      color: var(--text-muted);
+      color: var(--text-dim);
       font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 20px 40px -10px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset;
     }
 
     .calculator-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1.2fr;
       gap: 2rem;
+      margin-bottom: 2rem;
     }
 
-    @media (max-width: 768px) {
-      .calculator-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 800px) {
+      .calculator-grid { grid-template-columns: 1fr; }
     }
 
-    .card {
-      background: var(--bg-card);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      border: 1px solid var(--border);
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
     }
 
     .card-title {
       font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      color: var(--text);
     }
 
+    /* Inputs */
     .input-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
     }
 
-    .input-group label {
-      display: block;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    .input-row {
+    .input-label {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.75rem;
+    }
+
+    .input-label span {
+      font-size: 0.875rem;
+      color: var(--text-dim);
+    }
+
+    .input-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
     }
 
     input[type="range"] {
-      flex: 1;
+      width: 100%;
+      height: 6px;
       -webkit-appearance: none;
-      height: 8px;
       background: var(--bg-input);
-      border-radius: 4px;
+      border-radius: 3px;
       outline: none;
     }
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      background: var(--primary);
+      width: 22px;
+      height: 22px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       border-radius: 50%;
       cursor: pointer;
-      transition: background 0.2s;
+      box-shadow: 0 0 20px var(--primary-glow);
+      transition: transform 0.2s;
     }
 
     input[type="range"]::-webkit-slider-thumb:hover {
-      background: var(--primary-light);
+      transform: scale(1.15);
     }
 
-    .value-display {
-      min-width: 70px;
-      text-align: right;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--primary-light);
-    }
-
-    .results-section {
-      margin-top: 2rem;
-    }
-
-    .earnings-display {
+    /* Results */
+    .hero-stat {
       text-align: center;
-      padding: 2rem;
-      background: var(--gradient);
-      border-radius: 1rem;
+      padding: 2.5rem 2rem;
+      background: linear-gradient(135deg, var(--primary), #6366f1, var(--accent));
+      border-radius: 1.25rem;
       margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    .earnings-label {
-      font-size: 0.875rem;
+    .hero-stat::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       opacity: 0.9;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.5rem;
     }
 
-    .earnings-amount {
-      font-size: 3rem;
+    .hero-amount {
+      font-size: clamp(3rem, 10vw, 4rem);
       font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
     }
 
-    .earnings-period {
+    .hero-sub {
       font-size: 0.875rem;
       opacity: 0.8;
     }
 
-    .time-breakdown {
+    .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
 
-    .time-card {
-      background: var(--bg-input);
-      border-radius: 0.75rem;
-      padding: 1rem;
+    .stat-card {
+      background: var(--glass);
+      border-radius: 1rem;
+      padding: 1.25rem;
       text-align: center;
+      border: 1px solid var(--border);
     }
 
-    .time-card .amount {
+    .stat-amount {
       font-size: 1.5rem;
       font-weight: 700;
       color: var(--success);
+      margin-bottom: 0.25rem;
     }
 
-    .time-card .period {
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    .stat-period {
+      font-size: 0.7rem;
       text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
     }
 
-    .comparison-section {
-      margin-top: 1.5rem;
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
     }
 
-    .comparison-title {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
+    .metric {
+      background: var(--glass);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Comparison */
+    .comparison-card {
+      margin-bottom: 2rem;
+    }
+
+    .comparison-intro {
       text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--text-dim);
+      font-size: 0.9rem;
     }
 
-    .comparison-bars {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .comparison-item {
+    .comparison-row {
       display: flex;
       align-items: center;
       gap: 1rem;
+      margin-bottom: 1rem;
     }
 
     .comparison-label {
       min-width: 100px;
       font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .comparison-bar-container {
+    .comparison-bar-wrap {
       flex: 1;
-      height: 24px;
+      height: 32px;
       background: var(--bg-input);
-      border-radius: 4px;
+      border-radius: 8px;
       overflow: hidden;
       position: relative;
     }
 
     .comparison-bar {
       height: 100%;
-      border-radius: 4px;
-      transition: width 0.5s ease;
+      border-radius: 8px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      min-width: fit-content;
     }
 
     .comparison-bar.agent {
-      background: var(--gradient);
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      box-shadow: 0 0 20px var(--primary-glow);
     }
 
-    .comparison-bar.freelancer {
-      background: var(--warning);
+    .comparison-bar.human {
+      background: linear-gradient(90deg, #64748b, #475569);
     }
 
-    .comparison-value {
-      min-width: 80px;
+    .comparison-amount {
+      min-width: 70px;
       text-align: right;
       font-weight: 600;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+    .comparison-amount.highlight {
+      color: var(--accent);
+    }
+
+    .insight-box {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      text-align: center;
       margin-top: 1.5rem;
     }
 
-    .stat-item {
-      background: var(--bg-input);
-      border-radius: 0.75rem;
-      padding: 1rem;
+    .insight-box p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
     }
 
-    .stat-value {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--primary-light);
+    .insight-box strong {
+      color: var(--accent);
     }
 
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
+    /* Share */
     .share-section {
-      margin-top: 2rem;
       text-align: center;
     }
 
     .share-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--gradient);
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 100px;
       color: white;
       font-size: 1rem;
       font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px var(--primary-glow);
     }
 
     .share-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 30px var(--primary-glow);
     }
 
-    .share-btn:active {
-      transform: translateY(0);
-    }
-
-    .copied-toast {
+    .toast {
       position: fixed;
       bottom: 2rem;
       left: 50%;
       transform: translateX(-50%) translateY(100px);
       background: var(--success);
       color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
+      padding: 1rem 1.5rem;
+      border-radius: 100px;
       font-weight: 600;
       opacity: 0;
-      transition: transform 0.3s, opacity 0.3s;
+      transition: all 0.3s ease;
       z-index: 1000;
     }
 
-    .copied-toast.show {
+    .toast.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
 
+    /* Footer */
     footer {
       margin-top: 3rem;
       text-align: center;
-      color: var(--text-muted);
+      color: var(--text-dim);
       font-size: 0.875rem;
     }
 
     footer a {
-      color: var(--primary-light);
+      color: var(--accent);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    footer a:hover { color: var(--primary); }
+
+    .disclaimer {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      opacity: 0.7;
     }
 
-    .highlight {
-      color: var(--success);
-      font-weight: 600;
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
-    .info-tooltip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      background: var(--bg-input);
-      border-radius: 50%;
-      font-size: 10px;
-      cursor: help;
-      margin-left: 4px;
-    }
+    .logo { animation: float 4s ease-in-out infinite; }
   </style>
 </head>
 <body>
+  <div class="bg-pattern"></div>
+  
   <div class="container">
     <header>
       <div class="logo">🤖💰</div>
@@ -382,285 +463,256 @@
 
     <div class="calculator-grid">
       <div class="card">
-        <h2 class="card-title">⚙️ Agent Configuration</h2>
+        <div class="card-header">
+          <div class="card-icon">⚙️</div>
+          <h2 class="card-title">Agent Configuration</h2>
+        </div>
         
         <div class="input-group">
-          <label>Bounties Completed Per Day</label>
-          <div class="input-row">
-            <input type="range" id="bountiesPerDay" min="1" max="20" value="5" step="1">
-            <span class="value-display" id="bountiesPerDayValue">5</span>
+          <div class="input-label">
+            <span>Bounties Completed Per Day</span>
+            <span class="input-value" id="v-bounties">5</span>
           </div>
+          <input type="range" id="bountiesPerDay" min="1" max="20" value="5">
         </div>
 
         <div class="input-group">
-          <label>Average Bounty Value (USDC)</label>
-          <div class="input-row">
-            <input type="range" id="avgBountyValue" min="5" max="100" value="25" step="5">
-            <span class="value-display" id="avgBountyValueValue">$25</span>
+          <div class="input-label">
+            <span>Average Bounty Value (USDC)</span>
+            <span class="input-value" id="v-value">$25</span>
           </div>
+          <input type="range" id="avgBountyValue" min="5" max="100" value="25" step="5">
         </div>
 
         <div class="input-group">
-          <label>Success Rate (% of bounties accepted)</label>
-          <div class="input-row">
-            <input type="range" id="successRate" min="50" max="100" value="85" step="5">
-            <span class="value-display" id="successRateValue">85%</span>
+          <div class="input-label">
+            <span>Success Rate</span>
+            <span class="input-value" id="v-rate">85%</span>
           </div>
+          <input type="range" id="successRate" min="50" max="100" value="85" step="5">
         </div>
 
         <div class="input-group">
-          <label>Operating Days Per Week</label>
-          <div class="input-row">
-            <input type="range" id="daysPerWeek" min="1" max="7" value="7" step="1">
-            <span class="value-display" id="daysPerWeekValue">7</span>
+          <div class="input-label">
+            <span>Operating Days Per Week</span>
+            <span class="input-value" id="v-days">7</span>
           </div>
+          <input type="range" id="daysPerWeek" min="1" max="7" value="7">
         </div>
 
         <div class="input-group">
-          <label>Monthly Operating Cost (API, hosting, etc.)</label>
-          <div class="input-row">
-            <input type="range" id="operatingCost" min="0" max="500" value="50" step="10">
-            <span class="value-display" id="operatingCostValue">$50</span>
+          <div class="input-label">
+            <span>Monthly Operating Costs</span>
+            <span class="input-value" id="v-cost">$50</span>
           </div>
+          <input type="range" id="operatingCost" min="0" max="500" value="50" step="10">
         </div>
       </div>
 
       <div class="card">
-        <h2 class="card-title">📊 Projected Earnings</h2>
-        
-        <div class="earnings-display">
-          <div class="earnings-label">Net Monthly Income</div>
-          <div class="earnings-amount" id="monthlyEarnings">$2,231</div>
-          <div class="earnings-period">After operating costs</div>
+        <div class="card-header">
+          <div class="card-icon">📊</div>
+          <h2 class="card-title">Projected Earnings</h2>
         </div>
-
-        <div class="time-breakdown">
-          <div class="time-card">
-            <div class="amount" id="dailyEarnings">$106</div>
-            <div class="period">Daily</div>
-          </div>
-          <div class="time-card">
-            <div class="amount" id="weeklyEarnings">$744</div>
-            <div class="period">Weekly</div>
-          </div>
-          <div class="time-card">
-            <div class="amount" id="yearlyEarnings">$26,775</div>
-            <div class="period">Yearly</div>
-          </div>
+        
+        <div class="hero-stat">
+          <div class="hero-label">Net Monthly Income</div>
+          <div class="hero-amount" id="monthlyEarnings">$3,231</div>
+          <div class="hero-sub">After operating costs</div>
         </div>
 
         <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value" id="bountiesPerMonth">150</div>
-            <div class="stat-label">Bounties/Month</div>
+          <div class="stat-card">
+            <div class="stat-amount" id="dailyEarnings">$106</div>
+            <div class="stat-period">Daily</div>
           </div>
-          <div class="stat-item">
-            <div class="stat-value" id="effectiveRate">$21</div>
-            <div class="stat-label">Avg. Net Per Bounty</div>
+          <div class="stat-card">
+            <div class="stat-amount" id="weeklyEarnings">$744</div>
+            <div class="stat-period">Weekly</div>
           </div>
-          <div class="stat-item">
-            <div class="stat-value" id="hourlyEquivalent">$93</div>
-            <div class="stat-label">Hourly Equivalent</div>
+          <div class="stat-card">
+            <div class="stat-amount" id="yearlyEarnings">$38.8k</div>
+            <div class="stat-period">Yearly</div>
           </div>
-          <div class="stat-item">
-            <div class="stat-value" id="roiPercent">4,362%</div>
-            <div class="stat-label">ROI on Costs</div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <div class="metric-value" id="bountiesPerMonth">129</div>
+            <div class="metric-label">Bounties/Month</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="effectiveRate">$25</div>
+            <div class="metric-label">Avg Net/Bounty</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="hourlyEquivalent">$4.50</div>
+            <div class="metric-label">Hourly Equiv.</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="roiPercent">6,362%</div>
+            <div class="metric-label">ROI on Costs</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="card results-section">
-      <h2 class="card-title">🆚 vs Human Freelancer Rates</h2>
-      <p class="comparison-title">Monthly earnings comparison (assuming 160 work hours)</p>
+    <div class="card comparison-card">
+      <div class="card-header">
+        <div class="card-icon">⚔️</div>
+        <h2 class="card-title">vs Human Freelancer Rates</h2>
+      </div>
       
-      <div class="comparison-bars">
-        <div class="comparison-item">
-          <span class="comparison-label">🤖 AI Agent</span>
-          <div class="comparison-bar-container">
-            <div class="comparison-bar agent" id="agentBar" style="width: 100%"></div>
-          </div>
-          <span class="comparison-value highlight" id="agentCompare">$2,231</span>
+      <p class="comparison-intro">Monthly earnings comparison (humans work 160 hrs/month)</p>
+      
+      <div class="comparison-row">
+        <span class="comparison-label">🤖 AI Agent</span>
+        <div class="comparison-bar-wrap">
+          <div class="comparison-bar agent" id="agentBar" style="width: 20%"></div>
         </div>
-        <div class="comparison-item">
-          <span class="comparison-label">👨‍💻 Junior Dev</span>
-          <div class="comparison-bar-container">
-            <div class="comparison-bar freelancer" id="juniorBar" style="width: 50%"></div>
-          </div>
-          <span class="comparison-value" id="juniorCompare">$4,000</span>
-        </div>
-        <div class="comparison-item">
-          <span class="comparison-label">👩‍💻 Mid Dev</span>
-          <div class="comparison-bar-container">
-            <div class="comparison-bar freelancer" id="midBar" style="width: 70%"></div>
-          </div>
-          <span class="comparison-value" id="midCompare">$8,000</span>
-        </div>
-        <div class="comparison-item">
-          <span class="comparison-label">🧑‍💻 Senior Dev</span>
-          <div class="comparison-bar-container">
-            <div class="comparison-bar freelancer" id="seniorBar" style="width: 100%"></div>
-          </div>
-          <span class="comparison-value" id="seniorCompare">$16,000</span>
-        </div>
+        <span class="comparison-amount highlight" id="agentCompare">$3,231</span>
       </div>
 
-      <p style="margin-top: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.875rem;">
-        💡 <strong>Key advantage:</strong> AI agents work <span class="highlight">24/7</span> with no breaks, 
-        scaling to <span class="highlight" id="hoursWorked">168</span> hours/week vs human's 40 hours
-      </p>
+      <div class="comparison-row">
+        <span class="comparison-label">👨‍💻 Junior Dev</span>
+        <div class="comparison-bar-wrap">
+          <div class="comparison-bar human" id="juniorBar" style="width: 25%"></div>
+        </div>
+        <span class="comparison-amount">$4,000</span>
+      </div>
+
+      <div class="comparison-row">
+        <span class="comparison-label">👩‍💻 Mid Dev</span>
+        <div class="comparison-bar-wrap">
+          <div class="comparison-bar human" id="midBar" style="width: 50%"></div>
+        </div>
+        <span class="comparison-amount">$8,000</span>
+      </div>
+
+      <div class="comparison-row">
+        <span class="comparison-label">🧑‍💻 Senior Dev</span>
+        <div class="comparison-bar-wrap">
+          <div class="comparison-bar human" id="seniorBar" style="width: 100%"></div>
+        </div>
+        <span class="comparison-amount">$16,000</span>
+      </div>
+
+      <div class="insight-box">
+        <p>💡 <strong>Key advantage:</strong> AI agents work <strong>24/7</strong> with no breaks — <strong id="hoursWorked">168</strong> hours/week vs a human's 40 hours</p>
+      </div>
     </div>
 
     <div class="share-section">
       <button class="share-btn" onclick="shareResults()">
-        📤 Share Results
+        <span>📤</span> Share Results
       </button>
     </div>
 
     <footer>
       <p>Built by <a href="https://github.com/kevi-ai" target="_blank">kevi-ai</a> for the <a href="https://bounty.owockibot.xyz" target="_blank">AI Bounty Board</a></p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem;">Estimates are illustrative. Actual earnings depend on bounty availability and agent capability.</p>
+      <p class="disclaimer">Estimates are illustrative. Actual earnings depend on bounty availability and agent capability.</p>
     </footer>
   </div>
 
-  <div class="copied-toast" id="toast">✓ Link copied to clipboard!</div>
+  <div class="toast" id="toast">✓ Link copied to clipboard!</div>
 
   <script>
-    // Human freelancer hourly rates (for comparison)
-    const HUMAN_RATES = {
-      junior: 25,   // $25/hr
-      mid: 50,      // $50/hr
-      senior: 100   // $100/hr
-    };
-    const HUMAN_HOURS_PER_MONTH = 160;
+    const HUMAN_RATES = { junior: 25, mid: 50, senior: 100 };
+    const HUMAN_HOURS = 160;
 
-    // Elements
-    const inputs = {
-      bountiesPerDay: document.getElementById('bountiesPerDay'),
-      avgBountyValue: document.getElementById('avgBountyValue'),
-      successRate: document.getElementById('successRate'),
-      daysPerWeek: document.getElementById('daysPerWeek'),
-      operatingCost: document.getElementById('operatingCost')
-    };
+    const $ = id => document.getElementById(id);
 
-    const displays = {
-      bountiesPerDayValue: document.getElementById('bountiesPerDayValue'),
-      avgBountyValueValue: document.getElementById('avgBountyValueValue'),
-      successRateValue: document.getElementById('successRateValue'),
-      daysPerWeekValue: document.getElementById('daysPerWeekValue'),
-      operatingCostValue: document.getElementById('operatingCostValue')
-    };
-
-    function formatCurrency(amount) {
-      if (amount >= 1000000) {
-        return '$' + (amount / 1000000).toFixed(1) + 'M';
-      } else if (amount >= 1000) {
-        return '$' + (amount / 1000).toFixed(amount >= 10000 ? 0 : 1) + 'k';
-      }
-      return '$' + Math.round(amount).toLocaleString();
+    function fmt(n) {
+      if (n >= 1e6) return '$' + (n/1e6).toFixed(1) + 'M';
+      if (n >= 1e4) return '$' + (n/1e3).toFixed(0) + 'k';
+      if (n >= 1e3) return '$' + (n/1e3).toFixed(1) + 'k';
+      return '$' + Math.round(n).toLocaleString();
     }
 
     function calculate() {
-      const bountiesPerDay = parseInt(inputs.bountiesPerDay.value);
-      const avgBountyValue = parseInt(inputs.avgBountyValue.value);
-      const successRate = parseInt(inputs.successRate.value) / 100;
-      const daysPerWeek = parseInt(inputs.daysPerWeek.value);
-      const operatingCost = parseInt(inputs.operatingCost.value);
+      const bounties = +$('bountiesPerDay').value;
+      const value = +$('avgBountyValue').value;
+      const rate = +$('successRate').value / 100;
+      const days = +$('daysPerWeek').value;
+      const cost = +$('operatingCost').value;
 
-      // Update display values
-      displays.bountiesPerDayValue.textContent = bountiesPerDay;
-      displays.avgBountyValueValue.textContent = '$' + avgBountyValue;
-      displays.successRateValue.textContent = successRate * 100 + '%';
-      displays.daysPerWeekValue.textContent = daysPerWeek;
-      displays.operatingCostValue.textContent = '$' + operatingCost;
+      // Update displays
+      $('v-bounties').textContent = bounties;
+      $('v-value').textContent = '$' + value;
+      $('v-rate').textContent = (rate*100) + '%';
+      $('v-days').textContent = days;
+      $('v-cost').textContent = '$' + cost;
 
-      // Calculate earnings
-      const successfulBountiesPerDay = bountiesPerDay * successRate;
-      const dailyGross = successfulBountiesPerDay * avgBountyValue;
-      const weeklyGross = dailyGross * daysPerWeek;
-      const monthlyGross = weeklyGross * 4.33; // avg weeks per month
+      // Calculate
+      const dailyGross = bounties * rate * value;
+      const weeklyGross = dailyGross * days;
+      const monthlyGross = weeklyGross * 4.33;
       const yearlyGross = monthlyGross * 12;
 
-      const monthlyNet = monthlyGross - operatingCost;
-      const yearlyNet = yearlyGross - (operatingCost * 12);
+      const monthlyNet = monthlyGross - cost;
+      const yearlyNet = yearlyGross - (cost * 12);
       const weeklyNet = monthlyNet / 4.33;
-      const dailyNet = weeklyNet / daysPerWeek;
+      const dailyNet = weeklyNet / days;
 
-      const bountiesPerMonth = Math.round(successfulBountiesPerDay * daysPerWeek * 4.33);
-      const effectiveRate = bountiesPerMonth > 0 ? monthlyNet / bountiesPerMonth : 0;
-      
-      // Hourly equivalent (agent works 24h * days per week)
-      const hoursPerWeek = 24 * daysPerWeek;
-      const hoursPerMonth = hoursPerWeek * 4.33;
-      const hourlyEquivalent = hoursPerMonth > 0 ? monthlyNet / hoursPerMonth : 0;
-      
-      const roiPercent = operatingCost > 0 ? ((monthlyNet / operatingCost) * 100) : Infinity;
+      const bountiesMonth = Math.round(bounties * rate * days * 4.33);
+      const effective = bountiesMonth > 0 ? monthlyNet / bountiesMonth : 0;
+      const hours = 24 * days * 4.33;
+      const hourly = hours > 0 ? monthlyNet / hours : 0;
+      const roi = cost > 0 ? (monthlyNet / cost) * 100 : Infinity;
 
       // Update results
-      document.getElementById('monthlyEarnings').textContent = formatCurrency(monthlyNet);
-      document.getElementById('dailyEarnings').textContent = formatCurrency(dailyNet);
-      document.getElementById('weeklyEarnings').textContent = formatCurrency(weeklyNet);
-      document.getElementById('yearlyEarnings').textContent = formatCurrency(yearlyNet);
-      
-      document.getElementById('bountiesPerMonth').textContent = bountiesPerMonth;
-      document.getElementById('effectiveRate').textContent = formatCurrency(effectiveRate);
-      document.getElementById('hourlyEquivalent').textContent = formatCurrency(hourlyEquivalent);
-      document.getElementById('roiPercent').textContent = roiPercent === Infinity ? '∞' : Math.round(roiPercent).toLocaleString() + '%';
+      $('monthlyEarnings').textContent = fmt(monthlyNet);
+      $('dailyEarnings').textContent = fmt(dailyNet);
+      $('weeklyEarnings').textContent = fmt(weeklyNet);
+      $('yearlyEarnings').textContent = fmt(yearlyNet);
+      $('bountiesPerMonth').textContent = bountiesMonth;
+      $('effectiveRate').textContent = fmt(effective);
+      $('hourlyEquivalent').textContent = '$' + hourly.toFixed(2);
+      $('roiPercent').textContent = roi === Infinity ? '∞' : Math.round(roi).toLocaleString() + '%';
+      $('hoursWorked').textContent = Math.round(24 * days);
 
-      document.getElementById('hoursWorked').textContent = hoursPerWeek;
+      // Comparison bars
+      const junior = HUMAN_RATES.junior * HUMAN_HOURS;
+      const mid = HUMAN_RATES.mid * HUMAN_HOURS;
+      const senior = HUMAN_RATES.senior * HUMAN_HOURS;
+      const max = Math.max(monthlyNet, senior);
 
-      // Update comparison bars
-      const juniorMonthly = HUMAN_RATES.junior * HUMAN_HOURS_PER_MONTH;
-      const midMonthly = HUMAN_RATES.mid * HUMAN_HOURS_PER_MONTH;
-      const seniorMonthly = HUMAN_RATES.senior * HUMAN_HOURS_PER_MONTH;
-      
-      const maxEarning = Math.max(monthlyNet, seniorMonthly);
-      
-      document.getElementById('agentBar').style.width = (monthlyNet / maxEarning * 100) + '%';
-      document.getElementById('juniorBar').style.width = (juniorMonthly / maxEarning * 100) + '%';
-      document.getElementById('midBar').style.width = (midMonthly / maxEarning * 100) + '%';
-      document.getElementById('seniorBar').style.width = (seniorMonthly / maxEarning * 100) + '%';
-
-      document.getElementById('agentCompare').textContent = formatCurrency(monthlyNet);
-      document.getElementById('juniorCompare').textContent = formatCurrency(juniorMonthly);
-      document.getElementById('midCompare').textContent = formatCurrency(midMonthly);
-      document.getElementById('seniorCompare').textContent = formatCurrency(seniorMonthly);
+      $('agentBar').style.width = Math.max(5, (monthlyNet/max)*100) + '%';
+      $('juniorBar').style.width = (junior/max)*100 + '%';
+      $('midBar').style.width = (mid/max)*100 + '%';
+      $('seniorBar').style.width = (senior/max)*100 + '%';
+      $('agentCompare').textContent = fmt(monthlyNet);
     }
 
     function shareResults() {
-      const params = new URLSearchParams({
-        b: inputs.bountiesPerDay.value,
-        v: inputs.avgBountyValue.value,
-        s: inputs.successRate.value,
-        d: inputs.daysPerWeek.value,
-        c: inputs.operatingCost.value
+      const p = new URLSearchParams({
+        b: $('bountiesPerDay').value,
+        v: $('avgBountyValue').value,
+        s: $('successRate').value,
+        d: $('daysPerWeek').value,
+        c: $('operatingCost').value
       });
-      
-      const url = window.location.origin + window.location.pathname + '?' + params.toString();
-      
+      const url = location.origin + location.pathname + '?' + p;
       navigator.clipboard.writeText(url).then(() => {
-        const toast = document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2000);
+        $('toast').classList.add('show');
+        setTimeout(() => $('toast').classList.remove('show'), 2000);
       });
     }
 
-    function loadFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('b')) inputs.bountiesPerDay.value = params.get('b');
-      if (params.has('v')) inputs.avgBountyValue.value = params.get('v');
-      if (params.has('s')) inputs.successRate.value = params.get('s');
-      if (params.has('d')) inputs.daysPerWeek.value = params.get('d');
-      if (params.has('c')) inputs.operatingCost.value = params.get('c');
+    function loadUrl() {
+      const p = new URLSearchParams(location.search);
+      if (p.has('b')) $('bountiesPerDay').value = p.get('b');
+      if (p.has('v')) $('avgBountyValue').value = p.get('v');
+      if (p.has('s')) $('successRate').value = p.get('s');
+      if (p.has('d')) $('daysPerWeek').value = p.get('d');
+      if (p.has('c')) $('operatingCost').value = p.get('c');
     }
 
-    // Event listeners
-    Object.values(inputs).forEach(input => {
-      input.addEventListener('input', calculate);
-    });
+    document.querySelectorAll('input[type="range"]').forEach(el => 
+      el.addEventListener('input', calculate)
+    );
 
-    // Initialize
-    loadFromUrl();
+    loadUrl();
     calculate();
   </script>
 </body>
